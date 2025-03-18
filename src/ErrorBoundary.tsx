@@ -38,9 +38,8 @@ export const ErrorBoundary = ({ children }: PropsWithChildren) => {
     } catch (error) {
         handleError(error as Error)
         return (
-            <div className="error-boundary">
+            <div>
                 <h2>Something went wrong.</h2>
-
                 {import.meta.env.NODE_ENV === 'development' && (
                     <details>
                         <summary>Click for error details</summary>

@@ -6,7 +6,11 @@ export const Title = styled.h1`
 `
 
 export const Logo = styled.img`
-    width: 200px;
+    width: 150px;
+
+    @media (max-width: 768px) {
+        width: 80px;
+    }
 `
 
 export const Content = styled.div`
@@ -14,14 +18,19 @@ export const Content = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 40px;
-    height: 100%;
+    gap: 30px;
+    padding: 30px 20px;
+    min-height: 100%;
 `
 
 export const Form = styled.form`
-    display: flex;
-    justify-content: center;
-    gap: 30px;
+    display: grid;
+    grid-template-columns: 150px 100px 150px;
+    gap: 20px;
+    
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
 `
 
 export const Result = styled.div`

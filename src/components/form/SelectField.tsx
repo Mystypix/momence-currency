@@ -13,7 +13,7 @@ export const SelectField = ({ label, name, options, placeholder }: SelectFieldPr
     const { errors } = formState
 
     return (
-        <Field.Root invalid={!!errors[name]} width="320px">
+        <Field.Root invalid={!!errors[name]}>
             {label && <Field.Label>{label}</Field.Label>}
             <Controller
                 control={control}
