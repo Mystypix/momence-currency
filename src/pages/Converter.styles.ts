@@ -1,5 +1,13 @@
 import styled from '@emotion/styled'
 
+export const Loader = styled.img`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+`
+
 export const Title = styled.h1`
     font-size: 32px;
     line-height: 40px;

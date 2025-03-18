@@ -1,0 +1,7 @@
+[build.environment]
+  ENABLE_NETLIFY_EDGE = "true"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"

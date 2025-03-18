@@ -1,12 +1,13 @@
 import { createListCollection } from '@chakra-ui/react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Content, Form, Logo, Result, Title } from '@/pages/Converter.styles.ts'
+import { Content, Form, Loader, Logo, Result, Title } from '@/pages/Converter.styles.ts'
 import { SelectField } from '@/components/form/SelectField'
 import { InputField } from '@/components/form/InputField.tsx'
 import { ExchangeRates } from '@/types.ts'
 import { useApiQuery } from '../api/hooks'
 import { parseExchangeRates } from '../utils'
 import logoSrc from '../assets/logo.svg'
+import loaderSrc from '../assets/loader.svg'
 
 interface FormValues {
     amount: number
@@ -36,7 +37,7 @@ export const Converter = () => {
     const selectedCurrency = watch('currency')
     const decimalPrecision = Math.max(watch('decimalPrecision'), 0)
 
-    if (isLoading) return <div>Loading...</div>
+    if (isLoading) return <Loader src={loaderSrc} alt="Loader" />
     if (error) return <div>Error: {error.message}</div>
     if (!data) return <div>No data available</div>
 
