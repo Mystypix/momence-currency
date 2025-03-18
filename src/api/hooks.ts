@@ -1,13 +1,11 @@
-import {useQuery, UseQueryOptions} from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { useState } from 'react';
 
-export const useApiQuery = (
-    queryKey: string,
-    options?: UseQueryOptions
-) => {
+export const useApiQuery = (queryKey: string, options?: UseQueryOptions) => {
     const [error, setError] = useState<Error | null>(null);
 
-    const baseUrl = '/api/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing';
+    const baseUrl =
+        '/api/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing';
 
     const fetchData = async () => {
         try {
@@ -25,12 +23,7 @@ export const useApiQuery = (
         }
     };
 
-    const {
-        data,
-        isLoading,
-        isError,
-        refetch
-    } = useQuery({
+    const { data, isLoading, isError, refetch } = useQuery({
         queryKey: [baseUrl, queryKey],
         queryFn: fetchData,
         ...options,
@@ -43,4 +36,4 @@ export const useApiQuery = (
         error,
         refetch,
     };
-}
+};

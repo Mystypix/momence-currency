@@ -1,10 +1,11 @@
+import { Provider as ChakraProvider } from '@/components/ui/provider'
+import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { ErrorBoundary } from './ErrorBoundary'
 import { routeTree } from './routeTree.gen'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import './index.css';
-import "primereact/resources/themes/lara-dark-purple/theme.css";
+import './index.css'
 
 const queryClient = new QueryClient()
 const router = createRouter({ routeTree })
@@ -20,9 +21,13 @@ if (!rootElement.innerHTML) {
     const root = ReactDOM.createRoot(rootElement)
     root.render(
         <StrictMode>
-            <QueryClientProvider client={queryClient}>
-                <RouterProvider router={router} />
-            </QueryClientProvider>
-        </StrictMode>,
+            <ErrorBoundary>
+                <QueryClientProvider client={queryClient}>
+                    <ChakraProvider>
+                        <RouterProvider router={router} />
+                    </ChakraProvider>
+                </QueryClientProvider>
+            </ErrorBoundary>
+        </StrictMode>
     )
 }
