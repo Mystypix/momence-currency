@@ -1,58 +1,41 @@
-export const parseExchangeRates = (text: string) => {
-    const lines = text
+import { ExchangeRate, ExchangeRates } from '@/types.ts'
+
+export const parseExchangeRates = (data: string): ExchangeRates => {
+    // Split text into lines and filter empty ones
+    const lines = data
         .trim()
         .split('\n')
-        .filter((line) => line.trim());
+        .filter((line) => line.trim())
 
-    const dataLines: string[] = [];
-    let parsingData = false;
+    // Find data section (after first line containing '|')
+    const dataIndex = lines.findIndex((line) => line.includes('|'))
+    if (dataIndex === -1 || dataIndex === lines.length - 1) throw new Error('No data section found')
 
-    for (const line of lines) {
-        if (line.includes('|')) {
-            parsingData = true;
-            dataLines.push(line);
-        } else if (parsingData) {
-            dataLines.push(line);
-        }
+    // Extract headers and data lines
+    const headers = lines[dataIndex].split('|').map((h) => h.trim().toLowerCase())
+    const dataLines = lines.slice(dataIndex)
+
+    // Type conversion map
+    const typeConverters: { [key: string]: (v: string) => string | number } = {
+        amount: (v: string) => parseInt(v),
+        rate: (v: string) => parseFloat(v),
+        code: (v: string) => v,
     }
 
-    const headers = dataLines
-        .shift()
-        ?.split('|')
-        .map((header) => header.trim());
+    // Parse each line into an object
+    const result: { [key: string]: ExchangeRate } = {}
+    for (const line of dataLines.slice(1)) {
+        const values = line.split('|').map((v) => v.trim())
+        const obj: Partial<ExchangeRate> = {}
 
-    if (!headers) {
-        throw new Error('No headers found in the data');
+        headers.forEach((header, index) => {
+            const converter = typeConverters[header] || ((v: string) => v)
+            obj[header as keyof ExchangeRate] = converter(values[index]) as never
+        })
+
+        const code = obj.code
+        if (code) result[code] = obj as ExchangeRate
     }
 
-    return dataLines.reduce(
-        (acc, line) => {
-            const values = line.split('|').map((value) => value.trim());
-            const obj: { [key: string]: any } = {};
-
-            headers.forEach((header, index) => {
-                const value = values[index];
-                const sanitizedHeader = header.toLowerCase();
-
-                switch (sanitizedHeader) {
-                    case 'amount':
-                        obj[sanitizedHeader] = parseInt(value);
-                        break;
-                    case 'rate':
-                        obj[sanitizedHeader] = parseFloat(value);
-                        break;
-                    default:
-                        obj[sanitizedHeader] = value;
-                }
-            });
-
-            const code = obj['code'];
-            if (code) {
-                acc[code] = obj;
-            }
-
-            return acc;
-        },
-        {} as { [key: string]: any }
-    );
-};
+    return result
+}

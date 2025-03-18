@@ -1,10 +1,11 @@
-import styled from '@emotion/styled'
+import { ExchangeRates } from '@/types.ts'
+import { createListCollection } from '@chakra-ui/react'
+import { Content, Form, Logo, Result, Title } from '@/pages/Converter.styles.ts'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useApiQuery } from '../api/hooks'
 import { InputField } from '../components/form/InputField'
 import { SelectField } from '../components/form/SelectField'
 import { parseExchangeRates } from '../utils'
-import { createListCollection } from '@chakra-ui/react'
 import logoSrc from '../assets/logo.svg'
 
 interface FormValues {
@@ -13,16 +14,9 @@ interface FormValues {
     decimalPrecision: number
 }
 
-interface ExchangeRates {
-    [key: string]: {
-        rate: number
-        amount: number
-    }
-}
-
 export const Converter = () => {
-    const { data, error, isLoading } = useApiQuery<ExchangeRates>('daily.txt', {
-        select: (data: unknown) => parseExchangeRates(data as string),
+    const { data, error, isLoading } = useApiQuery('daily.txt', {
+        select: (data: string) => parseExchangeRates(data),
     })
 
     const methods = useForm<FormValues>({
@@ -77,34 +71,3 @@ export const Converter = () => {
         </Content>
     )
 }
-
-const Title = styled.h1`
-    font-size: 32px;
-    line-height: 40px;
-`
-
-const Logo = styled.img`
-    width: 200px;
-`
-
-const Content = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 40px;
-    height: 100%;
-`
-
-const Form = styled.form`
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-`
-
-const Result = styled.div`
-    display: flex;
-    gap: 5px;
-    font-size: 24px;
-    line-height: 32px;
-`

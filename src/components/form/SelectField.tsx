@@ -12,6 +12,8 @@ export const SelectField = ({ label, name, options, placeholder }: SelectFieldPr
     const { control, formState } = useFormContext()
     const { errors } = formState
 
+    console.log('FML', options)
+
     return (
         <Field.Root invalid={!!errors[name]} width="320px">
             {label && <Field.Label>{label}</Field.Label>}
@@ -20,11 +22,11 @@ export const SelectField = ({ label, name, options, placeholder }: SelectFieldPr
                 name={name}
                 render={({ field }) => (
                     <Select.Root
-                        name={field.name}
-                        value={field.value}
-                        onValueChange={({ value }) => field.onChange(value)}
-                        onInteractOutside={() => field.onBlur()}
                         collection={options}
+                        name={field.name}
+                        onInteractOutside={() => field.onBlur()}
+                        onValueChange={({ value }) => field.onChange(value)}
+                        value={field.value}
                     >
                         <Select.HiddenSelect />
                         <Select.Control>
@@ -40,7 +42,7 @@ export const SelectField = ({ label, name, options, placeholder }: SelectFieldPr
                                 <Select.Content>
                                     {options.items.map((option) => (
                                         <Select.Item item={option} key={option.value}>
-                                            {option.label}
+                                            {option.name}
                                             <Select.ItemIndicator />
                                         </Select.Item>
                                     ))}

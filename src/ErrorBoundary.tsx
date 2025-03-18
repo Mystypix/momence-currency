@@ -1,42 +1,42 @@
-import { useState, useEffect, PropsWithChildren } from 'react';
-import * as Sentry from '@sentry/react';
+import { useState, useEffect, PropsWithChildren } from 'react'
+import * as Sentry from '@sentry/react'
 
 interface ErrorInfo {
-    error: Error;
-    componentStack: string;
-    timestamp: string;
+    error: Error
+    componentStack: string
+    timestamp: string
 }
 
 export const ErrorBoundary = ({ children }: PropsWithChildren) => {
-    const [errorInfo, setErrorInfo] = useState<ErrorInfo | null>(null);
+    const [errorInfo, setErrorInfo] = useState<ErrorInfo | null>(null)
 
     const handleError = (error: Error) => {
-        const eventId = Sentry.captureException(error);
+        const eventId = Sentry.captureException(error)
 
-        Sentry.showReportDialog({ eventId });
+        Sentry.showReportDialog({ eventId })
 
         setErrorInfo({
             error,
             componentStack: error.stack || '',
-            timestamp: new Date().toISOString()
-        });
-    };
+            timestamp: new Date().toISOString(),
+        })
+    }
 
     useEffect(() => {
         return () => {
             if (errorInfo?.error) {
-                setErrorInfo(null);
+                setErrorInfo(null)
             }
-        };
-    }, [errorInfo]);
+        }
+    }, [errorInfo])
 
     try {
         if (errorInfo) {
-            throw errorInfo.error;
+            throw errorInfo.error
         }
-        return children;
+        return children
     } catch (error) {
-        handleError(error as Error);
+        handleError(error as Error)
         return (
             <div className="error-boundary">
                 <h2>Something went wrong.</h2>
@@ -48,6 +48,6 @@ export const ErrorBoundary = ({ children }: PropsWithChildren) => {
                     </details>
                 )}
             </div>
-        );
+        )
     }
-};
+}
