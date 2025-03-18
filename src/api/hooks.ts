@@ -1,10 +1,8 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-export const useApiQuery = (
-    options: UseQueryOptions
-) => {
-    const baseUrl =
-        '/api/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing'
+export const useApiQuery = (options: UseQueryOptions) => {
+    const host = import.meta.env.MODE === 'development' ? '/api' : 'https://www.cnb.cz'
+    const baseUrl = `${host}/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing`
     const { queryKey } = options
 
     return useQuery({
