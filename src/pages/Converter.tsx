@@ -1,12 +1,11 @@
-import { ExchangeRates } from '@/types.ts'
-import { createListCollection } from '@chakra-ui/react'
-import { Content, Form, Logo, Result, Title } from '@/pages/Converter.styles.ts'
-import { FormProvider, useForm } from 'react-hook-form'
-import { useApiQuery } from '../api/hooks'
-import { InputField } from '../components/form/InputField'
-import { SelectField } from '../components/form/SelectField'
-import { parseExchangeRates } from '../utils'
+import {createListCollection} from '@chakra-ui/react'
+import {Content, Form, Logo, NumberInputs, Result, Title} from '@/pages/Converter.styles.ts'
+import {FormProvider, useForm} from 'react-hook-form'
+import {useApiQuery} from '../api/hooks'
+import {SelectField} from '../components/form/SelectField'
+import {parseExchangeRates} from '../utils'
 import logoSrc from '../assets/logo.svg'
+import {InputField} from "@/components/form/InputField.tsx";
 
 interface FormValues {
     amount: number
@@ -16,7 +15,7 @@ interface FormValues {
 
 export const Converter = () => {
     const { data, error, isLoading } = useApiQuery('daily.txt', {
-        select: (data: string) => parseExchangeRates(data),
+        select: (rawData) => parseExchangeRates(rawData as string),
     })
 
     const methods = useForm<FormValues>({
@@ -42,7 +41,7 @@ export const Converter = () => {
         return <div>Error: {error.message}</div>
     }
 
-    const currencies = Object.keys(data as ExchangeRates)
+    const currencies = Object.keys(data)
     const currencyOptions = createListCollection({
         items: currencies.map((currency) => ({ name: currency, value: currency })),
     })
@@ -62,8 +61,8 @@ export const Converter = () => {
                 <span>Result:</span>
                 <strong>
                     {(
-                        (selectedAmount / (data as ExchangeRates)[selectedCurrency].rate) *
-                        (data as ExchangeRates)[selectedCurrency].amount
+                        (selectedAmount / data[selectedCurrency].rate) *
+                        data[selectedCurrency].amount
                     ).toFixed(decimalPrecision)}
                 </strong>
                 <span>{selectedCurrency}</span>

@@ -23,7 +23,7 @@ if (!rootElement.innerHTML) {
         <StrictMode>
             <ErrorBoundary>
                 <QueryClientProvider client={queryClient}>
-                    <ChakraProvider>
+                    <ChakraProvider forcedTheme="dark">
                         <RouterProvider router={router} />
                     </ChakraProvider>
                 </QueryClientProvider>

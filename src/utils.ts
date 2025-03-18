@@ -22,6 +22,8 @@ export const parseExchangeRates = (data: string): ExchangeRates => {
         code: (v: string) => v,
     }
 
+    console.log('picaaaaaa')
+
     // Parse each line into an object
     const result: { [key: string]: ExchangeRate } = {}
     for (const line of dataLines.slice(1)) {
