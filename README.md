@@ -21,3 +21,9 @@ Code will be automatically deployed after merge to master branch.
     pnpm test:e2e:headed
     pnpm test:e2e:debug
 ```
+
+## TODOs
+- [ ] Setup PR process and pipelines
+- [ ] Properly setup monitoring (current one is just a showcase)
+- [ ] Add more tests
+- [ ] Make better validation for number inputs

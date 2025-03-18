@@ -27,13 +27,14 @@ export const Converter = () => {
             decimalPrecision: 2,
         },
         mode: 'onChange',
+        criteriaMode: 'firstError',
     })
 
     const { watch } = methods
 
     const selectedAmount = watch('amount')
     const selectedCurrency = watch('currency')
-    const decimalPrecision = watch('decimalPrecision')
+    const decimalPrecision = Math.max(watch('decimalPrecision'), 0)
 
     if (isLoading) return <div>Loading...</div>
     if (error) return <div>Error: {error.message}</div>
@@ -50,9 +51,9 @@ export const Converter = () => {
             <Title data-testid="converter-page-title">Momence currency</Title>
             <FormProvider {...methods}>
                 <Form>
-                    <InputField label="Amount (in CZK)" name="amount" type="number" />
+                    <InputField label="Amount (in CZK)" min={0} name="amount" type="number" />
                     <SelectField label="Currency" name="currency" options={currencyOptions} />
-                    <InputField label="Decimal precision" name="decimalPrecision" type="number" />
+                    <InputField label="Decimal precision" min={0} name="decimalPrecision" type="number" />
                 </Form>
             </FormProvider>
             <Result>
