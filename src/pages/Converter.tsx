@@ -37,7 +37,7 @@ export const Converter = () => {
     const selectedCurrency = watch('currency')
     const decimalPrecision = Math.max(watch('decimalPrecision'), 0)
 
-    if (isLoading) return <Loader src={loaderSrc} alt="Loader" />
+    if (isLoading) return <Loader data-testid="loader" src={loaderSrc} alt="Loader" />
     if (error) return <div>Error: {error.message}</div>
     if (!data) return <div>No data available</div>
 
@@ -52,20 +52,26 @@ export const Converter = () => {
             <Title data-testid="converter-page-title">Momence currency</Title>
             <FormProvider {...methods}>
                 <Form>
-                    <InputField label="Amount (in CZK)" min={0} name="amount" type="number" />
+                    <InputField
+                        data-testid="converter-amountInput"
+                        label="Amount (in CZK)"
+                        min={0}
+                        name="amount"
+                        type="number"
+                    />
                     <SelectField label="Currency" name="currency" options={currencyOptions} />
                     <InputField label="Decimal precision" min={0} name="decimalPrecision" type="number" />
                 </Form>
             </FormProvider>
             <Result>
                 <span>Result:</span>
-                <strong>
+                <strong data-testid="converter-resultAmount">
                     {(
                         (selectedAmount / (data as ExchangeRates)[selectedCurrency].rate) *
                         (data as ExchangeRates)[selectedCurrency].amount
                     ).toFixed(decimalPrecision)}
                 </strong>
-                <span>{selectedCurrency}</span>
+                <span data-testid="converter-resultCurrency">{selectedCurrency}</span>
             </Result>
         </Content>
     )
